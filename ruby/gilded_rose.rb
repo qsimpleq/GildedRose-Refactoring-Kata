@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GildedRose
 
   def initialize(items)
