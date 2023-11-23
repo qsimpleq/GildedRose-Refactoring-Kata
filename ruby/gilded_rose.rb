@@ -37,14 +37,11 @@ class GildedRose
   private
 
   def handle_quality(item)
-    if (item.name != GOODS[:aged_brie]) && (item.name != GOODS[:tafkal80etc_concert_pass])
-      item.quality = item.quality - 1 if item.quality.positive? && (item.name != GOODS[:sulfuras])
-    elsif item.quality < DEFAULT_MAX_QUALITY
-      item.quality = item.quality + 1
-      if item.name == GOODS[:tafkal80etc_concert_pass]
-        item.quality = item.quality + 1 if item.sell_in < 11 && (item.quality < DEFAULT_MAX_QUALITY)
-        item.quality = item.quality + 1 if item.sell_in < 6 && (item.quality < DEFAULT_MAX_QUALITY)
-      end
+    case item.name
+    when AGED_BRIE, BACKSTAGE_PASS
+      handle_special_items(item)
+    else
+      handle_normal_items(item)
     end
   end
 
@@ -63,6 +60,19 @@ class GildedRose
     else
       decrease_quality(item) if item.quality.positive? && item.name != SULFURAS
     end
+  end
+
+  def handle_special_items(item)
+    increase_quality(item) if item.quality < DEFAULT_MAX_QUALITY
+
+    return unless item.name == BACKSTAGE_PASS
+
+    increase_quality(item) if item.sell_in < 11 && item.quality < DEFAULT_MAX_QUALITY
+    increase_quality(item) if item.sell_in < 6 && item.quality < DEFAULT_MAX_QUALITY
+  end
+
+  def handle_normal_items(item)
+    decrease_quality(item) if item.quality.positive? && item.name != SULFURAS
   end
 
   def decrease_quality(item)
