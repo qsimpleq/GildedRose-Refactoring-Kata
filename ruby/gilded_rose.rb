@@ -62,23 +62,33 @@ class GildedRose
   end
 
   def handle_special_items(item)
-    if item.name == CONJURED_MANA_CAKE
-      decrease_quality(item) if item.quality.positive?
-      decrease_quality(item) if item.quality.positive?
-
-      return
-    end
+    return if handle_conjured_mana_cake(item)
 
     increase_quality(item) if item.quality < MAX_QUALITY
 
-    return unless item.name == BACKSTAGE_PASS
-
-    increase_quality(item) if item.sell_in < 11 && item.quality < MAX_QUALITY
-    increase_quality(item) if item.sell_in < 6 && item.quality < MAX_QUALITY
+    handle_backstage_pass(item)
   end
 
   def handle_normal_items(item)
     decrease_quality(item) if item.quality.positive? && item.name != SULFURAS
+  end
+
+  def handle_conjured_mana_cake(item)
+    return unless item.name == CONJURED_MANA_CAKE
+
+    decrease_quality(item) if item.quality.positive?
+    decrease_quality(item) if item.quality.positive?
+
+    item
+  end
+
+  def handle_backstage_pass(item)
+    return unless item.name == BACKSTAGE_PASS
+
+    increase_quality(item) if item.sell_in < 11 && item.quality < MAX_QUALITY
+    increase_quality(item) if item.sell_in < 6 && item.quality < MAX_QUALITY
+
+    item
   end
 
   def validate_and_fix_quality(item)
