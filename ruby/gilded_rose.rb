@@ -3,6 +3,8 @@
 require_relative "item"
 
 class GildedRose
+  attr_reader :items
+
   MIN_QUALITY = 0
   MAX_QUALITY = 50
   GOODS = {

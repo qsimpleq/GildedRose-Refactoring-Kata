@@ -1,5 +1,7 @@
 require: rubocop-rspec
 
+RSpec/MultipleExpectations:
+  Enabled: false
 Style/Documentation:
   Enabled: false
 Style/StringLiterals:
