@@ -18,6 +18,7 @@ describe GildedRose do
 
     context "with dexterity_vest as normal item" do
       let(:name) { GildedRose::GOODS[:dexterity_vest] }
+      let(:item) { Item.new(name, 10, GildedRose::MIN_QUALITY) }
 
       it "decreases quality and sell_in as it gets older" do
         gilded_rose = rose_prepare([Item.new(name, 10, 20)])
@@ -31,6 +32,17 @@ describe GildedRose do
 
         expect(gilded_rose.first_child.quality).to eq(0)
         expect(gilded_rose.first_child.sell_in).to eq(9)
+      end
+    end
+
+    context 'with sulfuras' do
+      let(:name) { GildedRose::GOODS[:sulfuras] }
+
+      it 'does not change the quality or sell_in' do
+        gilded_rose = rose_prepare([Item.new(name, 0, 80)])
+
+        expect(gilded_rose.first_child.quality).to eq(80)
+        expect(gilded_rose.first_child.sell_in).to eq(0)
       end
     end
   end
