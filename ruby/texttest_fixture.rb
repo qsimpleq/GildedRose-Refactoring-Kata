@@ -24,16 +24,16 @@ class TexttestFixture
 
   def self.prepare_items
     [
-      [GildedRose::GOODS[:dexterity_vest][:name], 10, 20],
-      [GildedRose::GOODS[:aged_brie][:name], 2, 0],
-      [GildedRose::GOODS[:mongoose_elixir][:name], 5, 7],
-      [GildedRose::GOODS[:sulfuras][:name], 0, 80],
-      [GildedRose::GOODS[:sulfuras][:name], -1, 80],
-      [GildedRose::GOODS[:tafkal80etc_concert_pass][:name], 15, 20],
-      [GildedRose::GOODS[:tafkal80etc_concert_pass][:name], 10, 49],
-      [GildedRose::GOODS[:tafkal80etc_concert_pass][:name], 5, 49],
+      [GildedRose::GOODS[:dexterity_vest], 10, 20],
+      [GildedRose::GOODS[:aged_brie], 2, 0],
+      [GildedRose::GOODS[:mongoose_elixir], 5, 7],
+      [GildedRose::GOODS[:sulfuras], 0, 80],
+      [GildedRose::GOODS[:sulfuras], -1, 80],
+      [GildedRose::GOODS[:tafkal80etc_concert_pass], 15, 20],
+      [GildedRose::GOODS[:tafkal80etc_concert_pass], 10, 49],
+      [GildedRose::GOODS[:tafkal80etc_concert_pass], 5, 49],
       # This Conjured item does not work properly yet
-      [GildedRose::GOODS[:conjured_mana_cake][:name], 3, 6] # <-- :O
+      [GildedRose::GOODS[:conjured_mana_cake], 3, 6] # <-- :O
     ].map { Item.new(*_1) }
 
   end
