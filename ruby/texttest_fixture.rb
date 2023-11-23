@@ -3,6 +3,7 @@
 
 require_relative "gilded_rose"
 
+# rubocop:disable Metrics/MethodLength
 class TexttestFixture
   def self.run
     puts "OMGHAI!"
@@ -35,8 +36,8 @@ class TexttestFixture
       # This Conjured item does not work properly yet
       [GildedRose::GOODS[:conjured_mana_cake], 3, 6] # <-- :O
     ].map { Item.new(*_1) }
-
   end
 end
+# rubocop:enable Metrics/MethodLength
 
 TexttestFixture.run
