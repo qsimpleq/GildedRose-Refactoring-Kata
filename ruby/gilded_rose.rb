@@ -16,6 +16,7 @@ class GildedRose
 
   AGED_BRIE = GOODS[:aged_brie]
   BACKSTAGE_PASS = GOODS[:tafkal80etc_concert_pass]
+  SPECIAL_ITEMS = [AGED_BRIE, BACKSTAGE_PASS].freeze
   SULFURAS = GOODS[:sulfuras]
 
   def initialize(items)
@@ -33,8 +34,7 @@ class GildedRose
   private
 
   def handle_quality(item)
-    case item.name
-    when AGED_BRIE, BACKSTAGE_PASS
+    if SPECIAL_ITEMS.include?(item.name)
       handle_special_items(item)
     else
       handle_normal_items(item)
