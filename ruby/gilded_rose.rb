@@ -55,14 +55,13 @@ class GildedRose
   end
 
   def handle_expired_item(item)
-    if item.name != GOODS[:aged_brie]
-      if item.name != GOODS[:tafkal80etc_concert_pass]
-        item.quality = item.quality - 1 if item.quality.positive? && (item.name != GOODS[:sulfuras])
-      else
-        item.quality = 0
-      end
-    elsif item.quality < DEFAULT_MAX_QUALITY
-      item.quality = item.quality + 1
+    case item.name
+    when AGED_BRIE
+      increase_quality(item) if item.quality < DEFAULT_MAX_QUALITY
+    when BACKSTAGE_PASS
+      item.quality = 0
+    else
+      decrease_quality(item) if item.quality.positive? && item.name != SULFURAS
     end
   end
 
