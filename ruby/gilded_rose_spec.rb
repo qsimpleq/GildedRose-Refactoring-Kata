@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require File.join(File.dirname(__FILE__), "gilded_rose")
+require_relative "gilded_rose"
 require "rspec"
 
 describe GildedRose do

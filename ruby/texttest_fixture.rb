@@ -1,32 +1,42 @@
 #!/usr/bin/ruby -w
 # frozen_string_literal: true
 
-require File.join(File.dirname(__FILE__), "gilded_rose")
+require_relative "gilded_rose"
 
-puts "OMGHAI!"
-items = [
-  Item.new("+5 Dexterity Vest", 10, 20),
-  Item.new("Aged Brie", 2, 0),
-  Item.new("Elixir of the Mongoose", 5, 7),
-  Item.new("Sulfuras, Hand of Ragnaros", 0, 80),
-  Item.new("Sulfuras, Hand of Ragnaros", -1, 80),
-  Item.new("Backstage passes to a TAFKAL80ETC concert", 15, 20),
-  Item.new("Backstage passes to a TAFKAL80ETC concert", 10, 49),
-  Item.new("Backstage passes to a TAFKAL80ETC concert", 5, 49),
-  # This Conjured item does not work properly yet
-  Item.new("Conjured Mana Cake", 3, 6) # <-- :O
-]
+class TexttestFixture
+  def self.run
+    puts "OMGHAI!"
 
-days = 2
-days = ARGV[0].to_i + 1 if ARGV.size.positive?
+    items = prepare_items
+    days = ARGV.size.positive? ? (ARGV[0].to_i + 1) : 2
 
-gilded_rose = GildedRose.new items
-(0...days).each do |day|
-  puts "-------- day #{day} --------"
-  puts "name, sellIn, quality"
-  items.each do |item|
-    puts item
+    gilded_rose = GildedRose.new items
+    (0...days).each do |day|
+      puts "-------- day #{day} --------"
+      puts "name, sellIn, quality"
+      items.each do |item|
+        puts item
+      end
+      puts ""
+      gilded_rose.update_quality
+    end
   end
-  puts ""
-  gilded_rose.update_quality
+
+  def self.prepare_items
+    [
+      [GildedRose::GOODS[:dexterity_vest][:name], 10, 20],
+      [GildedRose::GOODS[:aged_brie][:name], 2, 0],
+      [GildedRose::GOODS[:mongoose_elixir][:name], 5, 7],
+      [GildedRose::GOODS[:sulfuras][:name], 0, 80],
+      [GildedRose::GOODS[:sulfuras][:name], -1, 80],
+      [GildedRose::GOODS[:tafkal80etc_concert_pass][:name], 15, 20],
+      [GildedRose::GOODS[:tafkal80etc_concert_pass][:name], 10, 49],
+      [GildedRose::GOODS[:tafkal80etc_concert_pass][:name], 5, 49],
+      # This Conjured item does not work properly yet
+      [GildedRose::GOODS[:conjured_mana_cake][:name], 3, 6] # <-- :O
+    ].map { Item.new(*_1) }
+
+  end
 end
+
+TexttestFixture.run
