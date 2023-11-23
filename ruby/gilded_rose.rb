@@ -16,7 +16,8 @@ class GildedRose
 
   AGED_BRIE = GOODS[:aged_brie]
   BACKSTAGE_PASS = GOODS[:tafkal80etc_concert_pass]
-  SPECIAL_ITEMS = [AGED_BRIE, BACKSTAGE_PASS].freeze
+  CONJURED_MANA_CAKE = GOODS[:conjured_mana_cake]
+  SPECIAL_ITEMS = [AGED_BRIE, BACKSTAGE_PASS, CONJURED_MANA_CAKE].freeze
   SULFURAS = GOODS[:sulfuras]
 
   def initialize(items)
@@ -61,6 +62,13 @@ class GildedRose
   end
 
   def handle_special_items(item)
+    if item.name == CONJURED_MANA_CAKE
+      decrease_quality(item) if item.quality.positive?
+      decrease_quality(item) if item.quality.positive?
+
+      return
+    end
+
     increase_quality(item) if item.quality < MAX_QUALITY
 
     return unless item.name == BACKSTAGE_PASS
