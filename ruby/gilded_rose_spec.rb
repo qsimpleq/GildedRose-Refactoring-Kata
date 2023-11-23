@@ -3,6 +3,11 @@
 require_relative "gilded_rose"
 require "rspec"
 
+# let(:aged_brie) { Item.new(GildedRose::GOODS[:aged_brie], 5, 10) }
+# let(:backstage_pass) { Item.new(GildedRose::GOODS[:backstage_pass], 10, 20) }
+# let(:conjured_mana_cake) { Item.new(GildedRose::GOODS[:conjured_mana_cake], 5, 10) }
+# let(:sulfuras) { Item.new(GildedRose::GOODS[:sulfuras], 0, 80) }
+
 describe GildedRose do
   describe "#update_quality" do
     def rose_prepare(items)
@@ -26,10 +31,28 @@ describe GildedRose do
         expect(gilded_rose.first_child.sell_in).to eq(9)
       end
 
-      it "does not decrease quality beyond the minimum" do
+      it "does not decrease quality below the minimum" do
         gilded_rose = rose_prepare([Item.new(name, 10, GildedRose::MIN_QUALITY)])
 
         expect(gilded_rose.first_child.quality).to eq(GildedRose::MIN_QUALITY)
+        expect(gilded_rose.first_child.sell_in).to eq(9)
+      end
+    end
+
+    context "with aged_brie" do
+      let(:name) { GildedRose::GOODS[:aged_brie] }
+
+      it "increases quality" do
+        gilded_rose = rose_prepare([Item.new(name, 10, 20)])
+
+        expect(gilded_rose.first_child.quality).to eq(21)
+        expect(gilded_rose.first_child.sell_in).to eq(9)
+      end
+
+      it "does not increase quality after the maximum" do
+        gilded_rose = rose_prepare([Item.new(name, 10, GildedRose::MAX_QUALITY)])
+
+        expect(gilded_rose.first_child.quality).to eq(GildedRose::MAX_QUALITY)
         expect(gilded_rose.first_child.sell_in).to eq(9)
       end
     end
