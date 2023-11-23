@@ -39,6 +39,8 @@ class GildedRose
     else
       handle_normal_items(item)
     end
+
+    validate_and_fix_quality(item)
   end
 
   def decrement_sell_in(item)
@@ -69,6 +71,13 @@ class GildedRose
 
   def handle_normal_items(item)
     decrease_quality(item) if item.quality.positive? && item.name != SULFURAS
+  end
+
+  def validate_and_fix_quality(item)
+    return unless item.name != SULFURAS
+
+    item.quality = MIN_QUALITY if item.quality < MIN_QUALITY
+    item.quality = MAX_QUALITY if item.quality > MAX_QUALITY
   end
 
   def decrease_quality(item)
