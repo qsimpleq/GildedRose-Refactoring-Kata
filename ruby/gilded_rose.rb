@@ -3,9 +3,8 @@
 require_relative "item"
 
 class GildedRose
-  # include GildedRoseHelper
-
-  DEFAULT_MAX_QUALITY = 50
+  MIN_QUALITY = 0
+  MAX_QUALITY = 50
   GOODS = {
     aged_brie: "Aged Brie",
     conjured_mana_cake: "Conjured Mana Cake",
@@ -18,9 +17,6 @@ class GildedRose
   AGED_BRIE = GOODS[:aged_brie]
   BACKSTAGE_PASS = GOODS[:tafkal80etc_concert_pass]
   SULFURAS = GOODS[:sulfuras]
-  DEFAULT_QUALITY = 1
-  MAX_QUALITY = DEFAULT_MAX_QUALITY
-  MIN_QUALITY = 0
 
   def initialize(items)
     @items = items
@@ -54,7 +50,7 @@ class GildedRose
   def handle_expired_item(item)
     case item.name
     when AGED_BRIE
-      increase_quality(item) if item.quality < DEFAULT_MAX_QUALITY
+      increase_quality(item) if item.quality < MAX_QUALITY
     when BACKSTAGE_PASS
       item.quality = 0
     else
@@ -63,12 +59,12 @@ class GildedRose
   end
 
   def handle_special_items(item)
-    increase_quality(item) if item.quality < DEFAULT_MAX_QUALITY
+    increase_quality(item) if item.quality < MAX_QUALITY
 
     return unless item.name == BACKSTAGE_PASS
 
-    increase_quality(item) if item.sell_in < 11 && item.quality < DEFAULT_MAX_QUALITY
-    increase_quality(item) if item.sell_in < 6 && item.quality < DEFAULT_MAX_QUALITY
+    increase_quality(item) if item.sell_in < 11 && item.quality < MAX_QUALITY
+    increase_quality(item) if item.sell_in < 6 && item.quality < MAX_QUALITY
   end
 
   def handle_normal_items(item)
