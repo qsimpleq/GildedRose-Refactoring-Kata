@@ -17,13 +17,31 @@ class GildedRose
   }.freeze
 
   SPECIAL_QUALITY = {
-    GOODS[:aged_brie] => 1,
-    GOODS[:tafkal80etc_concert_pass] => 1,
-    GOODS[:conjured_mana_cake] => 1
+    GOODS[:aged_brie] => lambda do |item, obj|
+      obj.instance_exec { increase_quality(item) }
+    end,
+    GOODS[:tafkal80etc_concert_pass] => lambda do |item, obj|
+      obj.instance_exec do
+        increase_quality(item)
+        increase_quality(item) if item.sell_in < 11
+        increase_quality(item) if item.sell_in < 6
+      end
+    end,
+    GOODS[:conjured_mana_cake] => lambda do |item, obj|
+      obj.instance_exec do
+        decrease_quality(item)
+        decrease_quality(item)
+      end
+    end
   }.freeze
+
   SPECIAL_EXPIRED = {
-    GOODS[:aged_brie] => 1,
-    GOODS[:tafkal80etc_concert_pass] => 1
+    GOODS[:aged_brie] => lambda do |item, obj|
+      obj.instance_exec { increase_quality(item) }
+    end,
+    GOODS[:tafkal80etc_concert_pass] => lambda do |item, _|
+      item.quality = 0
+    end
   }.freeze
 
   def initialize(items)
@@ -41,11 +59,9 @@ class GildedRose
   private
 
   def calc_quality(item)
-    if SPECIAL_QUALITY.key?(item.name)
-      calc_quality_of_special_item(item)
-    else
-      decrease_quality(item)
-    end
+    return SPECIAL_QUALITY[item.name].call(item, self) if SPECIAL_QUALITY.key?(item.name)
+
+    decrease_quality(item)
   end
 
   def decrement_sell_in(item)
@@ -57,44 +73,9 @@ class GildedRose
   def calc_quality_of_expired_item(item)
     return unless item.sell_in.negative?
 
-    return decrease_quality(item) unless SPECIAL_EXPIRED.key?(item.name)
-
-    calc_quality_of_special_expired_item(item)
-  end
-
-  def calc_quality_of_special_expired_item(item)
-    case item.name
-    when GOODS[:aged_brie]
-      increase_quality(item)
-    when GOODS[:tafkal80etc_concert_pass]
-      item.quality = 0
-    end
-  end
-
-  def calc_quality_of_special_item(item)
-    return if calc_quality_conjured_mana_cake(item)
-
-    increase_quality(item)
-
-    calc_quality_tafkal80etc_concert_pass(item)
-  end
-
-  def calc_quality_conjured_mana_cake(item)
-    return unless item.name == GOODS[:conjured_mana_cake]
+    return SPECIAL_EXPIRED[item.name].call(item, self) if SPECIAL_EXPIRED.key?(item.name)
 
     decrease_quality(item)
-    decrease_quality(item)
-
-    item
-  end
-
-  def calc_quality_tafkal80etc_concert_pass(item)
-    return unless item.name == GOODS[:tafkal80etc_concert_pass]
-
-    increase_quality(item) if item.sell_in < 11
-    increase_quality(item) if item.sell_in < 6
-
-    item
   end
 
   def decrease_quality(item)
