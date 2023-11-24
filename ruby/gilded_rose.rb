@@ -16,11 +16,15 @@ class GildedRose
     tafkal80etc_concert_pass: "Backstage passes to a TAFKAL80ETC concert"
   }.freeze
 
-  AGED_BRIE = GOODS[:aged_brie]
-  BACKSTAGE_PASS = GOODS[:tafkal80etc_concert_pass]
-  CONJURED_MANA_CAKE = GOODS[:conjured_mana_cake]
-  SPECIAL_ITEMS = [AGED_BRIE, BACKSTAGE_PASS, CONJURED_MANA_CAKE].freeze
-  SULFURAS = GOODS[:sulfuras]
+  SPECIAL_QUALITY = {
+    GOODS[:aged_brie] => 1,
+    GOODS[:tafkal80etc_concert_pass] => 1,
+    GOODS[:conjured_mana_cake] => 1
+  }.freeze
+  SPECIAL_EXPIRED = {
+    GOODS[:aged_brie] => 1,
+    GOODS[:tafkal80etc_concert_pass] => 1
+  }.freeze
 
   def initialize(items)
     @items = items
@@ -28,22 +32,20 @@ class GildedRose
 
   def update_quality
     @items.each do |item|
-      handle_quality(item)
+      calc_quality(item)
       decrement_sell_in(item)
-      handle_expired_item(item) if item.sell_in.negative?
+      calc_quality_of_expired_item(item)
     end
   end
 
   private
 
-  def handle_quality(item)
-    if SPECIAL_ITEMS.include?(item.name)
-      handle_special_items(item)
+  def calc_quality(item)
+    if SPECIAL_QUALITY.key?(item.name)
+      calc_quality_of_special_item(item)
     else
-      handle_normal_items(item)
+      decrease_quality(item)
     end
-
-    validate_and_fix_quality(item)
   end
 
   def decrement_sell_in(item)
@@ -52,59 +54,54 @@ class GildedRose
     item.sell_in -= 1
   end
 
-  def handle_expired_item(item)
+  def calc_quality_of_expired_item(item)
+    return unless item.sell_in.negative?
+
+    return decrease_quality(item) unless SPECIAL_EXPIRED.key?(item.name)
+
+    calc_quality_of_special_expired_item(item)
+  end
+
+  def calc_quality_of_special_expired_item(item)
     case item.name
-    when AGED_BRIE
-      increase_quality(item) if item.quality < MAX_QUALITY
-    when BACKSTAGE_PASS
+    when GOODS[:aged_brie]
+      increase_quality(item)
+    when GOODS[:tafkal80etc_concert_pass]
       item.quality = 0
-    else
-      decrease_quality(item) if item.quality.positive? && item.name != SULFURAS
     end
   end
 
-  def handle_special_items(item)
-    return if handle_conjured_mana_cake(item)
+  def calc_quality_of_special_item(item)
+    return if calc_quality_conjured_mana_cake(item)
 
-    increase_quality(item) if item.quality < MAX_QUALITY
+    increase_quality(item)
 
-    handle_backstage_pass(item)
+    calc_quality_tafkal80etc_concert_pass(item)
   end
 
-  def handle_normal_items(item)
-    decrease_quality(item) if item.quality.positive? && item.name != SULFURAS
-  end
+  def calc_quality_conjured_mana_cake(item)
+    return unless item.name == GOODS[:conjured_mana_cake]
 
-  def handle_conjured_mana_cake(item)
-    return unless item.name == CONJURED_MANA_CAKE
-
-    decrease_quality(item) if item.quality.positive?
-    decrease_quality(item) if item.quality.positive?
+    decrease_quality(item)
+    decrease_quality(item)
 
     item
   end
 
-  def handle_backstage_pass(item)
-    return unless item.name == BACKSTAGE_PASS
+  def calc_quality_tafkal80etc_concert_pass(item)
+    return unless item.name == GOODS[:tafkal80etc_concert_pass]
 
-    increase_quality(item) if item.sell_in < 11 && item.quality < MAX_QUALITY
-    increase_quality(item) if item.sell_in < 6 && item.quality < MAX_QUALITY
+    increase_quality(item) if item.sell_in < 11
+    increase_quality(item) if item.sell_in < 6
 
     item
-  end
-
-  def validate_and_fix_quality(item)
-    return unless item.name != SULFURAS
-
-    item.quality = MIN_QUALITY if item.quality < MIN_QUALITY
-    item.quality = MAX_QUALITY if item.quality > MAX_QUALITY
   end
 
   def decrease_quality(item)
-    item.quality -= 1
+    item.quality -= 1 if item.quality > MIN_QUALITY && item.name != GOODS[:sulfuras]
   end
 
   def increase_quality(item)
-    item.quality += 1
+    item.quality += 1 if item.quality < MAX_QUALITY && item.name != GOODS[:sulfuras]
   end
 end
