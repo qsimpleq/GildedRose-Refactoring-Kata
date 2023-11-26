@@ -25,16 +25,16 @@ class TexttestFixture
 
   def self.prepare_items
     [
-      [GildedRose::Constants::GOODS[:dexterity_vest], 10, 20],
-      [GildedRose::Constants::GOODS[:aged_brie], 2, 0],
-      [GildedRose::Constants::GOODS[:mongoose_elixir], 5, 7],
-      [GildedRose::Constants::GOODS[:sulfuras], 0, 80],
-      [GildedRose::Constants::GOODS[:sulfuras], -1, 80],
-      [GildedRose::Constants::GOODS[:tafkal80etc_concert_pass], 15, 20],
-      [GildedRose::Constants::GOODS[:tafkal80etc_concert_pass], 10, 49],
-      [GildedRose::Constants::GOODS[:tafkal80etc_concert_pass], 5, 49],
+      ["+5 Dexterity Vest", 10, 20],
+      ["Aged Brie", 2, 0],
+      ["Elixir of the Mongoose", 5, 7],
+      ["Sulfuras, Hand of Ragnaros", 0, 80],
+      ["Sulfuras, Hand of Ragnaros", -1, 80],
+      ["Backstage passes to a TAFKAL80ETC concert", 15, 20],
+      ["Backstage passes to a TAFKAL80ETC concert", 10, 49],
+      ["Backstage passes to a TAFKAL80ETC concert", 5, 49],
       # This Conjured item does not work properly yet
-      [GildedRose::Constants::GOODS[:conjured_mana_cake], 3, 6] # <-- :O
+      ["Conjured Mana Cake", 3, 6], # <-- :O
     ].map { GildedRose::Item.new(*_1) }
   end
 end
