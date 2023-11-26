@@ -16,21 +16,22 @@ describe GildedRose do
       gilded_rose
     end
 
+    def test_item(sell_in, sell_in_expected, quality, quality_expected)
+      gilded_rose = rose_prepare([GildedRose::Item.new(name, sell_in, quality)])
+
+      expect(gilded_rose.first_child.sell_in).to eq(sell_in_expected)
+      expect(gilded_rose.first_child.quality).to eq(quality_expected)
+    end
+
     context "with dexterity_vest as normal item" do
       let(:name) { GildedRose::Constants::GOODS[:dexterity_vest] }
 
       it "decreases quality and sell_in as it gets older" do
-        gilded_rose = rose_prepare([GildedRose::Item.new(name, 10, 20)])
-
-        expect(gilded_rose.first_child.quality).to eq(19)
-        expect(gilded_rose.first_child.sell_in).to eq(9)
+        test_item(10, 9, 20, 19)
       end
 
       it "does not decrease quality below the minimum" do
-        gilded_rose = rose_prepare([GildedRose::Item.new(name, 10, GildedRose::Constants::MIN_QUALITY)])
-
-        expect(gilded_rose.first_child.quality).to eq(GildedRose::Constants::MIN_QUALITY)
-        expect(gilded_rose.first_child.sell_in).to eq(9)
+        test_item(0, -1, GildedRose::Constants::MIN_QUALITY, GildedRose::Constants::MIN_QUALITY)
       end
     end
 
@@ -38,17 +39,27 @@ describe GildedRose do
       let(:name) { GildedRose::Constants::GOODS[:aged_brie] }
 
       it "increases quality" do
-        gilded_rose = rose_prepare([GildedRose::Item.new(name, 10, 20)])
-
-        expect(gilded_rose.first_child.quality).to eq(21)
-        expect(gilded_rose.first_child.sell_in).to eq(9)
+        test_item(10, 9, 20, 21)
       end
 
       it "does not increase quality after the maximum" do
-        gilded_rose = rose_prepare([GildedRose::Item.new(name, 10, GildedRose::Constants::MAX_QUALITY)])
+        test_item(10, 9, GildedRose::Constants::MAX_QUALITY, GildedRose::Constants::MAX_QUALITY)
+      end
+    end
 
-        expect(gilded_rose.first_child.quality).to eq(GildedRose::Constants::MAX_QUALITY)
-        expect(gilded_rose.first_child.sell_in).to eq(9)
+    context "with tafkal80etc_concert_pass" do
+      let(:name) { GildedRose::Constants::GOODS[:tafkal80etc_concert_pass] }
+
+      it "increases quality" do
+        test_item(20, 19, 20, 21)
+      end
+
+      it "increases quality by 2 on sell_in < 11" do
+        test_item(10, 9, 20, 22)
+      end
+
+      it "increases quality by 3 on sell_in < 6" do
+        test_item(5, 4, 20, 23)
       end
     end
 
@@ -56,17 +67,7 @@ describe GildedRose do
       let(:name) { GildedRose::Constants::GOODS[:conjured_mana_cake] }
 
       it "decreases in quality twice as fast as normal items" do
-        gilded_rose = rose_prepare([GildedRose::Item.new(name, 10, 20)])
-
-        expect(gilded_rose.first_child.quality).to eq(18)
-        expect(gilded_rose.first_child.sell_in).to eq(9)
-      end
-
-      it "does not decrease quality below the minimum" do
-        gilded_rose = rose_prepare([GildedRose::Item.new(name, 10, GildedRose::Constants::MIN_QUALITY)])
-
-        expect(gilded_rose.first_child.quality).to eq(GildedRose::Constants::MIN_QUALITY)
-        expect(gilded_rose.first_child.sell_in).to eq(9)
+        test_item(10, 9, 20, 18)
       end
     end
 
@@ -74,10 +75,7 @@ describe GildedRose do
       let(:name) { GildedRose::Constants::GOODS[:sulfuras] }
 
       it "does not change the quality or sell_in" do
-        gilded_rose = rose_prepare([GildedRose::Item.new(name, 0, 80)])
-
-        expect(gilded_rose.first_child.quality).to eq(80)
-        expect(gilded_rose.first_child.sell_in).to eq(0)
+        test_item(0, 0, 80, 80)
       end
     end
   end
