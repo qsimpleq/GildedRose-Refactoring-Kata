@@ -6,13 +6,18 @@ module GildedRose
   module Products
     class Backstage < Base
       def update_quality
-        item.sell_in -= 1
+        if sell_in.negative?
+          item.sell_in -= 1
+          item.quality = 0
 
-        return item.quality = 0 if sell_in.negative?
+          return
+        end
 
         increment_quality
-        increment_quality if sell_in < 10
-        increment_quality if sell_in < 5
+        increment_quality if sell_in < 11
+        increment_quality if sell_in < 6
+
+        item.sell_in -= 1
       end
 
       private
