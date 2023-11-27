@@ -8,7 +8,7 @@ module GildedRose
       def update_quality
         item.sell_in -= 1
         decrement_quality
-        decrement_quality if item.sell_in.negative?
+        decrement_quality if sell_in.negative?
       end
 
       private

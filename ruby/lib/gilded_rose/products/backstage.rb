@@ -18,7 +18,7 @@ module GildedRose
       private
 
       def increment_quality
-        item.quality += 1 if item.quality < MAX_QUALITY
+        item.quality += 1 if quality < MAX_QUALITY
       end
     end
   end
