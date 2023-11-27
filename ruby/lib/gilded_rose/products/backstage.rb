@@ -5,19 +5,17 @@ require_relative "base"
 module GildedRose
   module Products
     class Backstage < Base
-      def update_quality
-        if sell_in.negative?
-          item.sell_in -= 1
-          item.quality = 0
+      INCREMENT_BY_TWO_FROM_TEN = 10
+      INCREMENT_BY_THREE_FROM_FIVE = 5
 
-          return
-        end
+      def update_quality
+        decrease_sell_in
+
+        return item.quality = 0 if sell_in.negative?
 
         increment_quality
-        increment_quality if sell_in < 11
-        increment_quality if sell_in < 6
-
-        item.sell_in -= 1
+        increment_quality if sell_in < INCREMENT_BY_TWO_FROM_TEN
+        increment_quality if sell_in < INCREMENT_BY_THREE_FROM_FIVE
       end
 
       private

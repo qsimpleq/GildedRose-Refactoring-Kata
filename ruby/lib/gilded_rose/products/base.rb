@@ -22,6 +22,10 @@ module GildedRose
       def sell_in
         item.sell_in
       end
+
+      def decrease_sell_in
+        item.sell_in -= 1
+      end
     end
   end
 end

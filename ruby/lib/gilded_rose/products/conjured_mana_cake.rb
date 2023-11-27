@@ -6,8 +6,7 @@ module GildedRose
   module Products
     class ConjuredManaCake < Normal
       def update_quality
-        item.sell_in -= 1
-
+        decrease_sell_in
         decrement_quality
         decrement_quality
       end

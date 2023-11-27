@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "item"
 require_relative "products/constants"
 require_relative "products/aged_bree"
 require_relative "products/backstage"

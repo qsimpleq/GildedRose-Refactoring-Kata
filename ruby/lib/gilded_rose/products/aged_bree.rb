@@ -6,8 +6,8 @@ module GildedRose
   module Products
     class AgedBree < Base
       def update_quality
+        decrease_sell_in
         increment_quality
-        item.sell_in -= 1
         increment_quality if sell_in.negative?
       end
 

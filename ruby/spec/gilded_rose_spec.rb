@@ -54,11 +54,11 @@ describe GildedRose do
         test_item(20, 19, 20, 21)
       end
 
-      it "increases quality by 2 on sell_in < 11" do
+      it "increases quality by 2 on sell_in <= #{GildedRose::Products::Backstage::INCREMENT_BY_TWO_FROM_TEN}" do
         test_item(10, 9, 20, 22)
       end
 
-      it "increases quality by 3 on sell_in < 6" do
+      it "increases quality by 3 on sell_in <= #{GildedRose::Products::Backstage::INCREMENT_BY_THREE_FROM_FIVE}" do
         test_item(5, 4, 20, 23)
       end
     end
