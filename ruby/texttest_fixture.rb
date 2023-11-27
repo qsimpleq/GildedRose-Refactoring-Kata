@@ -34,7 +34,7 @@ class TexttestFixture
       ["Backstage passes to a TAFKAL80ETC concert", 10, 49],
       ["Backstage passes to a TAFKAL80ETC concert", 5, 49],
       # This Conjured item does not work properly yet
-      ["Conjured Mana Cake", 3, 6], # <-- :O
+      ["Conjured Mana Cake", 3, 6] # <-- :O
     ].map { GildedRose::Item.new(*_1) }
   end
 end

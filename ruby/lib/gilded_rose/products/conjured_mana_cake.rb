@@ -1,21 +1,15 @@
 # frozen_string_literal: true
 
-require_relative "base"
+require_relative "normal"
 
 module GildedRose
   module Products
-    class ConjuredManaCake < Base
+    class ConjuredManaCake < Normal
       def update_quality
         item.sell_in -= 1
 
         decrement_quality
-        decrement_quality if item.sell_in.negative?
-      end
-
-      private
-
-      def decrement_quality
-        @item.quality -= 1 if quality > MIN_QUALITY
+        decrement_quality
       end
     end
   end

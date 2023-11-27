@@ -11,14 +11,14 @@ module GildedRose
         return item.quality = 0 if sell_in.negative?
 
         increment_quality
-        increment_quality if sell_in < 11
-        increment_quality if sell_in < 6
+        increment_quality if sell_in < 10
+        increment_quality if sell_in < 5
       end
 
       private
 
       def increment_quality
-        item.quality += 1 if quality < MAX_QUALITY
+        item.quality += 1 if item.quality < MAX_QUALITY
       end
     end
   end

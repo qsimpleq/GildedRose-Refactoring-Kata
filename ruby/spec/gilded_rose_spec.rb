@@ -23,32 +23,32 @@ describe GildedRose do
       expect(gilded_rose.first_child.quality).to eq(quality_expected)
     end
 
-    context "with dexterity_vest as normal item" do
-      let(:name) { GildedRose::Constants::GOODS[:dexterity_vest] }
+    context "with normal item" do
+      let(:name) { "Normal item" }
 
       it "decreases quality and sell_in as it gets older" do
         test_item(10, 9, 20, 19)
       end
 
       it "does not decrease quality below the minimum" do
-        test_item(0, -1, GildedRose::Constants::MIN_QUALITY, GildedRose::Constants::MIN_QUALITY)
+        test_item(0, -1, GildedRose::Products::Constants::MIN_QUALITY, GildedRose::Products::Constants::MIN_QUALITY)
       end
     end
 
     context "with aged_brie" do
-      let(:name) { GildedRose::Constants::GOODS[:aged_brie] }
+      let(:name) { "Aged Brie" }
 
       it "increases quality" do
         test_item(10, 9, 20, 21)
       end
 
       it "does not increase quality after the maximum" do
-        test_item(10, 9, GildedRose::Constants::MAX_QUALITY, GildedRose::Constants::MAX_QUALITY)
+        test_item(10, 9, GildedRose::Products::Constants::MAX_QUALITY, GildedRose::Products::Constants::MAX_QUALITY)
       end
     end
 
-    context "with tafkal80etc_concert_pass" do
-      let(:name) { GildedRose::Constants::GOODS[:tafkal80etc_concert_pass] }
+    context "with backstage" do
+      let(:name) { "Backstage passes to a TAFKAL80ETC concert" }
 
       it "increases quality" do
         test_item(20, 19, 20, 21)
@@ -64,7 +64,7 @@ describe GildedRose do
     end
 
     context "with conjured_mana_cake" do
-      let(:name) { GildedRose::Constants::GOODS[:conjured_mana_cake] }
+      let(:name) { "Conjured Mana Cake" }
 
       it "decreases in quality twice as fast as normal items" do
         test_item(10, 9, 20, 18)
@@ -72,7 +72,7 @@ describe GildedRose do
     end
 
     context "with sulfuras" do
-      let(:name) { GildedRose::Constants::GOODS[:sulfuras] }
+      let(:name) { "Sulfuras, Hand of Ragnaros" }
 
       it "does not change the quality or sell_in" do
         test_item(0, 0, 80, 80)
