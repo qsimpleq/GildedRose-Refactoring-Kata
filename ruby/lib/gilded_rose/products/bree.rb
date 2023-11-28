@@ -4,7 +4,7 @@ require_relative "base"
 
 module GildedRose
   module Products
-    class AgedBree < Base
+    class Bree < Base
       def update_quality
         decrease_sell_in
         increment_quality

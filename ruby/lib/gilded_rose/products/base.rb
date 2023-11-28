@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require_relative "constants"
+require_relative "../product_constants"
 
 module GildedRose
   module Products
     class Base
       attr_reader :item
 
-      include Constants
+      include ProductConstants
 
       def initialize(item)
         @item = item

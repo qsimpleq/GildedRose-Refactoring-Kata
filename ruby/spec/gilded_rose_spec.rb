@@ -31,7 +31,7 @@ describe GildedRose do
       end
 
       it "does not decrease quality below the minimum" do
-        test_item(0, -1, GildedRose::Products::Constants::MIN_QUALITY, GildedRose::Products::Constants::MIN_QUALITY)
+        test_item(0, -1, GildedRose::ProductConstants::MIN_QUALITY, GildedRose::ProductConstants::MIN_QUALITY)
       end
     end
 
@@ -43,7 +43,7 @@ describe GildedRose do
       end
 
       it "does not increase quality after the maximum" do
-        test_item(10, 9, GildedRose::Products::Constants::MAX_QUALITY, GildedRose::Products::Constants::MAX_QUALITY)
+        test_item(10, 9, GildedRose::ProductConstants::MAX_QUALITY, GildedRose::ProductConstants::MAX_QUALITY)
       end
     end
 

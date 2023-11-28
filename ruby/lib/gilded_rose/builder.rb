@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "products/constants"
-require_relative "products/aged_bree"
+require_relative "products/bree"
 require_relative "products/backstage"
-require_relative "products/conjured_mana_cake"
+require_relative "products/conjured"
 require_relative "products/normal"
 
 module GildedRose
@@ -12,9 +11,9 @@ module GildedRose
 
     DEFAULT_PRODUCT_CLASS = Products::Normal
     PRODUCT_CLASSES = {
-      "Aged Brie" => Products::AgedBree,
+      "Aged Brie" => Products::Bree,
       "Backstage passes to a TAFKAL80ETC concert" => Products::Backstage,
-      "Conjured Mana Cake" => Products::ConjuredManaCake,
+      "Conjured Mana Cake" => Products::Conjured,
       "Sulfuras, Hand of Ragnaros" => Products::Base
     }.freeze
 
